@@ -1,0 +1,6 @@
+# ignored files
+
+**/obj
+**/.vs/
+obj/**
+.vs/**
