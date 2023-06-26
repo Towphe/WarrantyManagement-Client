@@ -8,6 +8,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<WarrantyrepoContext>(opts =>{
     opts.UseNpgsql(builder.Configuration.GetConnectionString("db_key"));
 });
+builder.Host.ConfigureLogging(logging =>{
+    logging.ClearProviders();
+    logging.AddConsole();
+});
 
 var app = builder.Build();
 
