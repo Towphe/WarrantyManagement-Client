@@ -12,6 +12,8 @@ builder.Host.ConfigureLogging(logging =>{
     logging.ClearProviders();
     logging.AddConsole();
 });
+builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -25,6 +27,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-app.MapRazorPages();
+app.UseSession();
+app.MapDefaultControllerRoute();
 
 app.Run();
