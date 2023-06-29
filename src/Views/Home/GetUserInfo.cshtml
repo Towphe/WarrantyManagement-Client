@@ -1,0 +1,16 @@
+@model UserInfoDto
+
+<div>
+  <h2>User Info</h2>
+  <form asp-controller="Home" asp-action="Finish" method="post">
+    <label>First Name</label>
+    <input asp-for="FirstName" required />
+    <label>Last Name</label>
+    <input asp-for="LastName" required />
+    <label>Contact Number</label>
+    <input asp-for="ContactNumber" required />
+    <label>Email</label>
+    <input asp-for="Email" required />
+    <button type="submit">Submit</button>
+  </form>
+</div>
