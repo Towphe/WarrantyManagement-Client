@@ -24,6 +24,7 @@ public partial class WarrantyrepoContext : DbContext
     public virtual DbSet<Merchant> Merchants { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -82,6 +83,7 @@ public partial class WarrantyrepoContext : DbContext
                 .HasDefaultValueSql("CURRENT_DATE")
                 .HasColumnName("date_added");
             entity.Property(e => e.DatePurchased).HasColumnName("date_purchased");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Email)
                 .HasMaxLength(254)
                 .HasColumnName("email");
