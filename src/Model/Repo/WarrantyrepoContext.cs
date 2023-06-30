@@ -103,6 +103,9 @@ public partial class WarrantyrepoContext : DbContext
             entity.Property(e => e.SalesOrderNum)
                 .HasMaxLength(30)
                 .HasColumnName("sales_order_num");
+            entity.Property(e => e.Store)
+                .HasMaxLength(50)
+                .HasColumnName("store");
             entity.Property(e => e.Variation)
                 .HasMaxLength(255)
                 .HasColumnName("variation");

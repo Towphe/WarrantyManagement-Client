@@ -31,5 +31,7 @@ public partial class Entry
 
     public string? Description { get; set; }
 
+    public string Store { get; set; } = null!;
+
     public virtual Product Product { get; set; } = null!;
 }
