@@ -13,17 +13,22 @@ public class HomeController : Controller{
     _dbContext = dbCtx;
   }
   private WarrantyrepoContext _dbContext {get; set;}
-  public IActionResult Index() => View();
+  public IActionResult Index(){
+    ViewData["Title"] = "Warranty";
+    return View();
+  };
   [Route("product")]
   public async Task<IActionResult> GetProductInfo(){
     // maybe implement in Dapper
     List<Product> products = await _dbContext.Products.ToListAsync();
     ViewBag.ProductCount = products.Count;
+    ViewData["Title"] = "Product Info";
     return View(products);
   }
   [Route("user")]
   public async Task<IActionResult> GetUserInfo(ProductInfoDto productInfo){
     TempData.Put<ProductInfoDto>("product", productInfo);
+    ViewData["Title"] = "User Info";
     return View();
   }
   [Route("finish")]
@@ -44,7 +49,7 @@ public class HomeController : Controller{
     };
     await _dbContext.Entries.AddAsync(entry);
     await _dbContext.SaveChangesAsync();
-
+    ViewData["Title"] = "Request Submitted";
     return View(userInfoDto);
   }
 }
