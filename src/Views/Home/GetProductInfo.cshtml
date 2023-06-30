@@ -12,6 +12,14 @@
         }
       }
     </select>
+    <label>Merchant</label>
+    <select form="ProductInfo" name="StoreName" value="StoreName">
+      @{
+        for (int i=0; i<@ViewBag.Merchants.Count; i++){
+          <option name="@ViewBag.Merchants[i].Id" value="@ViewBag.Merchants[i].Id">@ViewBag.Merchants[i].Name [@ViewBag.Merchants[i].Platform] </option>
+        }
+      }
+    </select>
     <label>Variation (if any)</label>
     <input class="input-text" name="variation" id="variation" />
     <label>Reference Number</label>

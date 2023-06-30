@@ -21,7 +21,9 @@ public class HomeController : Controller{
   public async Task<IActionResult> GetProductInfo(){
     // maybe implement in Dapper
     List<Product> products = await _dbContext.Products.ToListAsync();
+    List<Merchant> merchants = await _dbContext.Merchants.ToListAsync();
     ViewBag.ProductCount = products.Count;
+    ViewBag.Merchants = merchants;
     ViewData["Title"] = "Product Info";
     return View(products);
   }
@@ -44,6 +46,7 @@ public class HomeController : Controller{
       ReferenceNum = productInfo.ReferenceNumber,
       SalesOrderNum = productInfo.SalesOrderNumber,
       Variation = productInfo.Variation,
+      Store = productInfo.StoreName,
       DatePurchased = DateOnly.FromDateTime(productInfo.Date),
       DateAdded = DateOnly.FromDateTime(DateTime.Now)
     };
