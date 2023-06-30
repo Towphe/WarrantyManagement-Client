@@ -1,6 +1,7 @@
 @model List<Product>
 
-<div>
+<link rel="stylesheet" href="~/css/form.css" />
+<div class="main">
   <h2>Product Information</h2>
   <form asp-controller="Home" asp-action="GetUserInfo" id="ProductInfo" method="post">
     <label>Product</label>
@@ -12,17 +13,19 @@
       }
     </select>
     <label>Variation (if any)</label>
-    <input name="variation" id="variation" />
+    <input class="input-text" name="variation" id="variation" />
     <label>Reference Number</label>
-    <input name="ReferenceNumber" id="ReferenceNumber" required />
+    <input class="input-text" name="ReferenceNumber" id="ReferenceNumber" required />
     <label>Sales Order Number</label>
-    <input name="SalesOrderNumber" id="SalesOrderNumber" required />
+    <input class="input-text" name="SalesOrderNumber" id="SalesOrderNumber" required />
     <label>Problem Description</label>
-    <input name="ProblemDescription" id="ProblemDescription" required />
+    <input class="input-text" name="ProblemDescription" id="ProblemDescription" required />
     <label>Date Received</label>
-    <input type="date" name="date" id="date" required/>
+    <input class="input-date" type="date" name="date" id="date" required/>
     <label>Pictures / Videos of Problem</label>
-    <p>(implement later)</p>
-    <button type="submit">Next</button>
+    <p style="color:grey;">(implement later)</p>
+    <div class="nextButton-container">
+      <button class="next-button" type="submit">Next</button>
+    </div>
   </form>
 </div>

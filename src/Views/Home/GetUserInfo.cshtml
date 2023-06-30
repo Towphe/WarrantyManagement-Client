@@ -1,16 +1,19 @@
 @model UserInfoDto
 
-<div>
+<link rel="stylesheet" href="~/css/form.css" />
+<div class="main">
   <h2>User Info</h2>
   <form asp-controller="Home" asp-action="Finish" method="post">
     <label>First Name</label>
-    <input asp-for="FirstName" required />
+    <input class="input-text" asp-for="FirstName" required />
     <label>Last Name</label>
-    <input asp-for="LastName" required />
+    <input class="input-text" asp-for="LastName" required />
     <label>Contact Number</label>
-    <input asp-for="ContactNumber" required />
+    <input class="input-text" asp-for="ContactNumber" required />
     <label>Email</label>
-    <input asp-for="Email" required />
-    <button type="submit">Submit</button>
+    <input class="input-text" asp-for="Email" required />
+    <div class="submitButton-container">
+      <button class="submit-button" type="submit">Submit</button>
+    </div>
   </form>
 </div>
