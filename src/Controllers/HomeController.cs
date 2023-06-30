@@ -16,7 +16,7 @@ public class HomeController : Controller{
   public IActionResult Index(){
     ViewData["Title"] = "Warranty";
     return View();
-  };
+  }
   [Route("product")]
   public async Task<IActionResult> GetProductInfo(){
     // maybe implement in Dapper
