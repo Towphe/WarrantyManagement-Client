@@ -1,0 +1,54 @@
+body{
+  display:flex;
+  align-items: center;
+}
+h2{
+  font-size: 1.75em;
+}
+label, input, select{
+  display:block;
+  font-size: 1.25em
+}
+label{
+  margin-top: 1em;
+}
+input{
+  margin-top: 0.25em;
+  height: 2em;
+  font-size: 1.3em;
+}
+.input-text{
+  width: 95%;
+}
+select{
+  width: 95%;
+  height: 2em;
+}
+.nextButton-container, .submitButton-container{
+  display: flex;
+  justify-content: center;
+}
+.next-button, .submit-button{
+  background-color: grey;
+  border: none;
+  font-size: 1.3em;
+  padding: 0.8em;
+  color: white;
+}
+.submit-button{
+  margin-top: 1.5em;
+  background-color: green;
+}
+@media only screen and (min-width: 800px){
+  body{
+    justify-content: center;
+  }
+  .main{
+    width: 65%;
+  }
+}
+@media only screen and (min-width: 1100px){
+  .main{
+    width: 40%;
+  }
+}

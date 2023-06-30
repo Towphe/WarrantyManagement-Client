@@ -1,0 +1,7 @@
+html{
+  font-family: Arial;
+}
+body, .main{
+  height: auto;
+  width: 100%;
+}
