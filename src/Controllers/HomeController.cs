@@ -47,6 +47,7 @@ public class HomeController : Controller{
       SalesOrderNum = productInfo.SalesOrderNumber,
       Variation = productInfo.Variation,
       Store = productInfo.StoreName,
+      Status = "UNRESOLVED",
       DatePurchased = DateOnly.FromDateTime(productInfo.Date),
       DateAdded = DateOnly.FromDateTime(DateTime.Now)
     };
