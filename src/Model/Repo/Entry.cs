@@ -33,5 +33,7 @@ public partial class Entry
 
     public string Store { get; set; } = null!;
 
+    public string Status { get; set; } = null!;
+
     public virtual Product Product { get; set; } = null!;
 }

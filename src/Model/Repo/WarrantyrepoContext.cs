@@ -25,6 +25,8 @@ public partial class WarrantyrepoContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -103,6 +105,9 @@ public partial class WarrantyrepoContext : DbContext
             entity.Property(e => e.SalesOrderNum)
                 .HasMaxLength(30)
                 .HasColumnName("sales_order_num");
+            entity.Property(e => e.Status)
+                .HasMaxLength(25)
+                .HasColumnName("status");
             entity.Property(e => e.Store)
                 .HasMaxLength(50)
                 .HasColumnName("store");
@@ -175,6 +180,29 @@ public partial class WarrantyrepoContext : DbContext
                 .HasForeignKey(d => d.MerchantId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_merchant");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("users_pkey");
+
+            entity.ToTable("users");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(11)
+                .HasColumnName("id");
+            entity.Property(e => e.Email)
+                .HasMaxLength(254)
+                .HasColumnName("email");
+            entity.Property(e => e.Password)
+                .HasMaxLength(86)
+                .HasColumnName("password");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .HasColumnName("username");
+            entity.Property(e => e.Vcode)
+                .HasMaxLength(6)
+                .HasColumnName("vcode");
         });
 
         OnModelCreatingPartial(modelBuilder);
