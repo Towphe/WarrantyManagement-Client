@@ -40,7 +40,7 @@ public class HomeController : Controller{
       Id = IDGenerator.GenerateID("ENT"),
       FirstName = userInfoDto.FirstName,
       LastName = userInfoDto.LastName,
-      ContactNumber = userInfoDto.ContactNumber,
+      ContactNumber = userInfoDto.ContactNumber,  
       Email = userInfoDto.Email,
       ProductId = productInfo.ProductId,
       ReferenceNum = productInfo.ReferenceNumber,

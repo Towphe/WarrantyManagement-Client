@@ -26,7 +26,6 @@ public partial class WarrantyrepoContext : DbContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -195,8 +194,12 @@ public partial class WarrantyrepoContext : DbContext
                 .HasMaxLength(254)
                 .HasColumnName("email");
             entity.Property(e => e.Password)
-                .HasMaxLength(86)
+                .HasMaxLength(255)
                 .HasColumnName("password");
+            entity.Property(e => e.UserToken)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("'N/A'::character varying")
+                .HasColumnName("user_token");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");
