@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="~/css/form.css" />
 <div class="main">
   <h2>Product Information</h2>
-  <form asp-controller="Home" asp-action="GetUserInfo" id="ProductInfo" method="post">
+  <form enctype="multipart/form-data" asp-controller="Home" asp-action="Finish" id="ProductInfo" method="post">
     <label>Product</label>
     <select form="ProductInfo" name="ProductId" value="ProductId">
       @{
@@ -31,7 +31,8 @@
     <label>Date Received</label>
     <input class="input-date" type="date" name="date" id="date" required/>
     <label>Pictures / Videos of Problem</label>
-    <p style="color:grey;">(implement later)</p>
+    <input type="file" name="Media" id="Media" accept="image/png, image/jpeg" multiple>
+    <!--<p style="color:grey;">(implement later)</p>-->
     <div class="nextButton-container">
       <button class="next-button" type="submit">Next</button>
     </div>
