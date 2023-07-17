@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using src.Model.Repo;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-app.UseSession();
 app.MapDefaultControllerRoute();
-
+app.UseSession();
 app.Run();
