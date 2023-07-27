@@ -26,6 +26,11 @@ public partial class WarrantyrepoContext : DbContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=localhost;Database=warrantyrepo;Username=postgres;Password=pingu");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -164,6 +169,9 @@ public partial class WarrantyrepoContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(70)
                 .HasColumnName("name");
+            entity.Property(e => e.Variants)
+                .HasColumnType("json")
+                .HasColumnName("variants");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)

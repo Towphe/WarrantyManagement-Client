@@ -3,38 +3,68 @@
 <link rel="stylesheet" href="~/css/form.css" />
 <div class="main">
   <h2>Product Information</h2>
-  <form enctype="multipart/form-data" asp-controller="Home" asp-action="Finish" id="ProductInfo" method="post">
+  <form enctype="multipart/form-data" asp-controller="Home" asp-action="Review" id="ProductInfo" method="post">
     <label>Product</label>
-    <select form="ProductInfo" name="ProductId" value="ProductId">
-      @{
-        for (int i=0; i<ViewBag.ProductCount; i++){
-          <option name="@Model[i].Id" value="@Model[i].Id">@Model[i].Name</option>
+      <select form="ProductInfo" id="ProductId" name="ProductId" value="ProductId">
+        @{
+          for (int i=0; i<ViewBag.ProductCount; i++){
+            <option name="@Model[i].Id" value="@Model[i].Id">@Model[i].Name</option>
+          }
         }
-      }
-    </select>
-    <label>Merchant</label>
-    <select form="ProductInfo" name="StoreName" value="StoreName">
-      @{
-        for (int i=0; i<@ViewBag.Merchants.Count; i++){
-          <option name="@ViewBag.Merchants[i].Id" value="@ViewBag.Merchants[i].Id">@ViewBag.Merchants[i].Name [@ViewBag.Merchants[i].Platform] </option>
+      </select>
+      <label>Variation (if any)</label>
+      <input class="input-text" name="variation" id="variation" /> <!-- make into a dropdown list next time -->
+      <label>Merchant</label>
+      <select form="ProductInfo" name="StoreName" value="StoreName">
+        @{
+          for (int i=0; i<@ViewBag.Merchants.Count; i++){
+            <option name="@ViewBag.Merchants[i].Id" value="@ViewBag.Merchants[i].Id">@ViewBag.Merchants[i].Name [@ViewBag.Merchants[i].Platform] </option>
+          }
         }
-      }
-    </select>
-    <label>Variation (if any)</label>
-    <input class="input-text" name="variation" id="variation" />
-    <label>Reference Number</label>
-    <input class="input-text" name="ReferenceNumber" id="ReferenceNumber" required />
-    <label>Sales Order Number</label>
-    <input class="input-text" name="SalesOrderNumber" id="SalesOrderNumber" required />
-    <label>Problem Description</label>
-    <input class="input-text" name="ProblemDescription" id="ProblemDescription" required />
-    <label>Date Received</label>
-    <input class="input-date" type="date" name="date" id="date" required/>
-    <label>Pictures / Videos of Problem</label>
-    <input type="file" name="Media" id="Media" accept="image/png, image/jpeg" multiple required>
-    <!--<p style="color:grey;">(implement later)</p>-->
-    <div class="nextButton-container">
-      <button class="next-button" type="submit">Next</button>
-    </div>
+      </select>
+      <label>Reference Number</label>
+      <input class="input-text" name="ReferenceNumber" id="ReferenceNumber" required />
+      <label>Sales Order Number</label>
+      <input class="input-text" name="SalesOrderNumber" id="SalesOrderNumber" required />
+      <label>Problem Description</label>
+      <input class="input-text" name="ProductDescription" id="ProductDescription" required />
+      <label>Date Received</label>
+      <input class="input-date" type="date" name="date" id="date" required/>
+      <label>Pictures / Videos of Problem</label>
+      <input type="file" name="Media" id="Media" accept="image/png, image/jpeg" multiple required>
+      <!--<p style="color:grey;">(implement later)</p>-->
+      <div class="nextButton-container">
+        <button class="next-button" onclick="CacheEntry()" type="submit">Next</button>
+      </div>
   </form>
+  <div id="temp">
+    <img id="image" />
+  </div>
+  <script>
+    const CacheEntry = () =>{
+      // cache data
+      // cache images
+      
+    }
+    const mediaInput = document.getElementById("Media");
+      mediaInput.addEventListener('change', (event) =>{
+        const images = event.target.files;
+
+        for (const image of images){
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.addEventListener('load', () => {
+            const imagesArray = localStorage.getItem('images');
+            let images = [];
+            if (imagesArray){
+              images = [...JSON.parse(imagesArray)];
+              images.push(reader.result);
+            } else{
+              images.push(reader.result);
+            }
+            localStorage.setItem('images', JSON.stringify(images));
+          });
+        }
+      });
+  </script>
 </div>
