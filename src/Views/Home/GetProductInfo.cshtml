@@ -1,27 +1,33 @@
-@model List<Product>
+@model ProductAndMerchantDto
+@{
+  List<Merchant> merchants = Model.Merchants;
+  List<Product> products = Model.Products;
+}
 
 <link rel="stylesheet" href="~/css/form.css" />
+
 <div class="main">
   <h2>Product Information</h2>
+  <a href="/user">Go back to user info</a>
   <form enctype="multipart/form-data" asp-controller="Home" asp-action="Review" id="ProductInfo" method="post">
     <label>Product</label>
       <select form="ProductInfo" id="ProductId" name="ProductId" value="ProductId">
         @{
           for (int i=0; i<ViewBag.ProductCount; i++){
-            <option name="@Model[i].Id" value="@Model[i].Id">@Model[i].Name</option>
+            <option name="@products[i].Id" value="@products[i].Id">@products[i].Name</option>
           }
         }
       </select>
       <label>Variation (if any)</label>
       <input class="input-text" name="variation" id="variation" /> <!-- make into a dropdown list next time -->
       <label>Merchant</label>
-      <select form="ProductInfo" name="StoreName" value="StoreName">
+      <select form="ProductInfo" name="StoreName" id="StoreName" value="StoreName">
         @{
-          for (int i=0; i<@ViewBag.Merchants.Count; i++){
-            <option name="@ViewBag.Merchants[i].Id" value="@ViewBag.Merchants[i].Id">@ViewBag.Merchants[i].Name [@ViewBag.Merchants[i].Platform] </option>
+          for (int i=0; i<@merchants.Count; i++){
+            <option name="@Model.Merchants[i].Id" value="@Model.Merchants[i].Id">@Model.Merchants[i].Name [@Model.Merchants[i].Platform] </option>
           }
         }
-      </select>
+      </select> 
       <label>Reference Number</label>
       <input class="input-text" name="ReferenceNumber" id="ReferenceNumber" required />
       <label>Sales Order Number</label>
@@ -30,41 +36,81 @@
       <input class="input-text" name="ProductDescription" id="ProductDescription" required />
       <label>Date Received</label>
       <input class="input-date" type="date" name="date" id="date" required/>
-      <label>Pictures / Videos of Problem</label>
-      <input type="file" name="Media" id="Media" accept="image/png, image/jpeg" multiple required>
+      <label for="Media">Pictures / Videos of Problem</label>
+      <input type="file" name="Media" id="Media" accept="image/png, image/jpeg" style="color:transparent;" multiple>
+      <label id="fileCount">No files uploaded</label>
       <!--<p style="color:grey;">(implement later)</p>-->
       <div class="nextButton-container">
-        <button class="next-button" onclick="CacheEntry()" type="submit">Next</button>
+        <button class="next-button" onclick="SaveProductInfo()" type="submit">Next</button>
       </div>
   </form>
   <div id="temp">
     <img id="image" />
   </div>
   <script>
-    const CacheEntry = () =>{
-      // cache data
-      // cache images
-      
+    
+    // load from localStorage
+    const LoadProductInfo = () => {
+      const productInfoJSON = sessionStorage.getItem('productInfo');
+      if (productInfoJSON == null){
+        document.getElementById('Media').required = true;
+        return null;
+      }
+      const productInfo = JSON.parse(productInfoJSON);
+      document.getElementById('ProductId').value = productInfo.productId;
+      document.getElementById('ProductId').innerHTML = productInfo.productName;
+      document.getElementById('variation').value = productInfo.variation;
+      document.getElementById("StoreName").selectedIndex = productInfo.storeId-1;
+      document.getElementById('ReferenceNumber').value = productInfo.referenceNumber;
+      document.getElementById('SalesOrderNumber').value = productInfo.salesOrderNumber;
+      document.getElementById('ProductDescription').value = productInfo.productDescription;
+      document.getElementById('date').value = productInfo.date;
     }
-    const mediaInput = document.getElementById("Media");
-      mediaInput.addEventListener('change', (event) =>{
-        const images = event.target.files;
 
-        for (const image of images){
-          const reader = new FileReader();
-          reader.readAsDataURL(image);
-          reader.addEventListener('load', () => {
-            const imagesArray = localStorage.getItem('images');
-            let images = [];
-            if (imagesArray){
-              images = [...JSON.parse(imagesArray)];
-              images.push(reader.result);
-            } else{
-              images.push(reader.result);
-            }
-            localStorage.setItem('images', JSON.stringify(images));
-          });
-        }
-      });
+    const SaveProductInfo = () =>{
+      const productInfo = {
+        productId: document.getElementById('ProductId').value,
+        productName: document.getElementById('ProductId').innerHTML,
+        variation: document.getElementById('variation').value,
+        storeId: document.getElementById('StoreName').value,
+        storeName: document.getElementById("StoreName").options[document.getElementById("StoreName").selectedIndex].text,
+        referenceNumber: document.getElementById('ReferenceNumber').value,
+        salesOrderNumber: document.getElementById('SalesOrderNumber').value,
+        productDescription: document.getElementById('ProductDescription').value,
+        date: document.getElementById('date').value
+      };
+      const productInfoJSON = JSON.stringify(productInfo);
+      sessionStorage.setItem('productInfo', productInfoJSON);
+    }
+
+    const DisplayMediaCount = () =>{
+      const count = JSON.parse(localStorage.getItem('images')).length;
+      document.getElementById("fileCount").innerHTML = count + " files uploaded"; 
+    }
+
+    LoadProductInfo();
+    const mediaInput = document.getElementById("Media");
+    mediaInput.addEventListener('change', (event) =>{
+      const images = event.target.files;
+      for (const image of images){
+        const reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.addEventListener('load', () => {
+          const imagesArray = localStorage.getItem('images');
+          let images = [];
+          if (imagesArray){
+            images = [...JSON.parse(imagesArray)];
+            images.push(reader.result);
+          } else{
+            images.push(reader.result);
+          }
+          localStorage.setItem('images', JSON.stringify(images));
+        });
+      }
+      document.getElementById("fileCount").innerHTML = images.length + " files uploaded"; 
+    });
+    if (localStorage.getItem('images') != null){
+      DisplayMediaCount();
+    }
   </script>
 </div>

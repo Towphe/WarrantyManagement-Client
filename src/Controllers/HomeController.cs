@@ -43,13 +43,24 @@ public class HomeController : Controller{
 
     // implement phone validation
     
-    TempData.Put<UserInfoDto>("userInfo", userInfo);
-    List<Product> products = await _dbContext.Products.ToListAsync();
-    List<Merchant> merchants = await _dbContext.Merchants.ToListAsync();
+    //TempData.Put<UserInfoDto>("userInfo", userInfo);
+    List<Product> products = await _dbContext.Products.Select(p => new Product{
+      Id = p.Id,
+      Name = p.Name
+    }).ToListAsync();
+    List<Merchant> merchants = await _dbContext.Merchants.Select(m => new Merchant {
+      Id = m.Id,
+      Name = m.Name,
+      Company = m.Company,
+      Platform = m.Platform
+    }).ToListAsync();
     ViewBag.ProductCount = products.Count;
-    ViewBag.Merchants = merchants;
     ViewData["Title"] = "Product Info";
-    return View(products);
+    ProductAndMerchantDto productsAndMerchants = new ProductAndMerchantDto(){
+      Merchants = merchants,
+      Products = products
+    };
+    return View(productsAndMerchants);
   }
   [Route("review")]
   public async Task<IActionResult> Review(ProductInfoDto productInfo){
@@ -61,7 +72,7 @@ public class HomeController : Controller{
   public async Task<IActionResult> Finish(UserInfoDto userInfo, ProductInfoDto productInfo, string TempId, string MediaJSON){
     Entry entry = new Entry(){
       Id = TempId,
-      FirstName = userInfo.FirstName,
+      FirstName = userInfo.FirstName, 
       LastName = userInfo.LastName,
       ContactNumber = userInfo.ContactNumber,  
       Email = userInfo.Email,
@@ -84,7 +95,6 @@ public class HomeController : Controller{
   // implement for media upload:
   [Route("media-upload/{entryId}")]
   [HttpPost]
-  //[Consumes("image/png", "image/jpg")]
   public async Task<HttpStatusCode> UploadMedia([FromRoute] string entryId){
     // decode image base 64 -> upload to s3
     var client = new AmazonS3Client();
@@ -114,7 +124,6 @@ public class HomeController : Controller{
         };
         var response = await client.PutObjectAsync(objectRequest);  
       }
-      
       mediaCount += 1;
     }
     return HttpStatusCode.OK;

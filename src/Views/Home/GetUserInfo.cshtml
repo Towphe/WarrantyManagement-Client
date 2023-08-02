@@ -13,9 +13,31 @@
     <label>Email</label>
     <input class="input-text" asp-for="Email" required />
     <div class="submitButton-container">
-      <button class="submit-button" type="submit">Submit</button>
+      <button onclick="SaveUserInfo()" class="submit-button" type="submit">Submit</button>
     </div>
   </form>
 </div>
 <script>
+  // load user Info
+  const LoadUserInfo = () => {
+    if (localStorage.getItem('userInfo') == null){
+      return null;
+    }
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+    document.getElementById("FirstName").value = userInfo.firstName;
+    document.getElementById("LastName").value = userInfo.lastName;
+    document.getElementById("ContactNumber").value = userInfo.contactNumber;
+    document.getElementById("Email").value = userInfo.email;
+  }
+  const SaveUserInfo = () => {
+    const userInfo = {
+      firstName: document.getElementById("FirstName").value,
+      lastName: document.getElementById("LastName").value,
+      contactNumber: document.getElementById("ContactNumber").value,
+      email: document.getElementById("Email").value
+    };
+    const userInfoJSON = JSON.stringify(userInfo);
+    sessionStorage.setItem("userInfo", userInfoJSON);
+  } 
+  LoadUserInfo();
 </script>

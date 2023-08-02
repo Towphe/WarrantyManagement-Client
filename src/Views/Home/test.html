@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <script>
+      let request = window.indexedDB.open("warrantyDB", 1);
+      request.onupgradeneeded = function() {
+        let db = request.result;
+        if (!db.objectStoreNames.contains('images')){
+          db.createObjectStore('images', {keyPath: 'id'});
+        }
+      };
+      request.onsuccess = function(){
+        let db = request.result;
+        db.transaction("images", "readwrite");
+        let images = transaction.objectStore("images");
+        let image = {
+          id: 'img1',
+          img: "base64/img:jpg//wsiaaiomompwlode/"
+        };
+        let objectRequest = images.add(image);
+        objectRequest.onsuccess = function(){
+          console.log("image uploaded", request.result);
+        };
+        transaction.oncomplete = function() {
+          console.log("Transaction is complete");
+        }
+      };
+    </script>
+  </body>
+</html>

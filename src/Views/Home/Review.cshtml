@@ -5,41 +5,43 @@
   string tempId = TempData.Get<string>("tempId");
 }
 
+<a href="/product">Go Back</a>
 <div>
 <form asp-action="Finish" method="post">
   <h1>Review Entry</h1>
   <label>First Name</label>
-  <input type="text" name="FirstName" id="FirstName" value="@userInfo.FirstName" readonly="true" />
+  <input type="text" name="FirstName" id="FirstName" readonly="true" />
   <label>Last Name</label>
-  <input type="text" name="LastName" id="LastName" value="@userInfo.LastName" readonly="true" />
+  <input type="text" name="LastName" id="LastName" readonly="true" />
   <label>Contact Number</label>
-  <input type="text" name="ContactNumber" id="ContactNumber" value="@userInfo.ContactNumber" />
+  <input type="text" name="ContactNumber" id="ContactNumber" />
   <label>Email</label>
-  <input type="text" name="Email" id="Email" value="@userInfo.Email" />
+  <input type="text" name="Email" id="Email" />
   <label>Product Name</label>
   <input type="text" value="@productName" readonly="true"/>
-  <input type="text" name="ProductId" id="ProductId" value="@Model.ProductId" readonly="true" hidden />
+  <input type="text" name="ProductId" id="ProductId" readonly="true" hidden />
   <label>Variation</label>
   @{
     if (Model.Variation != ""){
-      <input type="text" name="Variation" id="Variation" value="@Model.Variation" readonly="true" />
+      <input type="text" name="Variation" id="Variation" readonly="true" />
     }
   }
   <label>Merchant</label>
-  <input type="text" name="StoreName" id="StoreName" value="@Model.StoreName" reaonly="true" />
+  <input type="text" id="StoreNameActual" readonly="true" />
+  <input type="text" name="StoreName" id="StoreName" reaonly="true" hidden/>
   <label>Sales Order Number</label>
-  <input type="text" name="SalesOrderNumber" id="SalesOrderNumber" value="@Model.SalesOrderNumber" readonly="true" />
+  <input type="text" name="SalesOrderNumber" id="SalesOrderNumber" readonly="true" />
   <label>Reference Number</label>
-  <input name="ReferenceNumber" id="ReferenceNumber" value="@Model.ReferenceNumber" readonly="true">
+  <input name="ReferenceNumber" id="ReferenceNumber" readonly="true">
   <label>Date Received</label>
-  <input type="text" name="date" id="date" value="@Model.Date.ToShortDateString()" readonly="true" />
+  <input type="text" name="date" id="date" readonly="true" />
   <label>Product Description</label>
-  <input type="text" name="ProductDescription" id="ProductDescription" value="@Model.ProductDescription" readonly="true" />
+  <input type="text" name="ProductDescription" id="ProductDescription" readonly="true" />
   <div>
     media goes here
   </div>
   <input type="text" name="MediaJSON" id="MediaJSON" readonly="true" hidden>
-  <input type="text" name="TempId" id="TempId" value="@tempId" readonly="true" hidden />
+  <input type="text" name="TempId" id="TempId" value="@tempId"   readonly="true" hidden />
   <label>Images</label>
   <div id="imagesDiv">
 
@@ -49,10 +51,29 @@
 </div>
 
 <script>
+  // display entered values
+  const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+  const productInfo = JSON.parse(sessionStorage.getItem('productInfo'));
+  document.getElementById("FirstName").value = userInfo.firstName;
+  document.getElementById("LastName").value = userInfo.lastName;
+  document.getElementById("ContactNumber").value = userInfo.contactNumber;
+  document.getElementById("Email").value = userInfo.email;
+  document.getElementById("ProductId").innerHTML = productInfo.productName;
+  document.getElementById("ProductId").value = productInfo.productId;
+  document.getElementById("ReferenceNumber").value = productInfo.referenceNumber;
+  document.getElementById("SalesOrderNumber").value = productInfo.salesOrderNumber;
+  document.getElementById("StoreNameActual").value = productInfo.storeName;
+  document.getElementById("StoreName").value = productInfo.storeId; 
+  document.getElementById("date").value = productInfo.date; 
+  if (productInfo.variation != null){
+    document.getElementById("Variation").value = productInfo.variation;
+  }
+  document.getElementById("ProductDescription").value = productInfo.productDescription;
+  // display images
   const images = JSON.parse(localStorage.getItem('images'));
   const imagesDiv = document.getElementById("imagesDiv");
   images.forEach((image) => {
-    let newImage = new Image(60%, 34%);
+    let newImage = new Image(600, 340);
     newImage.src = image;
     imagesDiv.appendChild(newImage);
   });
